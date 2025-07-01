@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>이메일 인증</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+</head>
+<body>
+<section class="section">
+    <div class="container" style="max-width: 400px;">
+        <h1 class="title has-text-centered">이메일 인증</h1>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="notification is-info">
+              {% for message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST">
+            <div class="field">
+                <label class="label">이메일로 전송된 인증 코드</label>
+                <div class="control">
+                    <input class="input" type="text" name="code" required>
+                </div>
+            </div>
+            <div class="field is-grouped is-justify-content-center">
+                <div class="control">
+                    <button class="button is-primary" type="submit">확인</button>
+                </div>
+                <div class="control">
+                    <a href="{{ url_for('auth.login') }}" class="button is-light">로그인</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+</body>
+</html>

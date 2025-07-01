@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>자율학습 출석</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://openfpcdn.io/fingerprintjs/v4"></script>
+</head>
+<body>
+<section class="section">
+    <div class="container" style="max-width: 500px;">
+        <h1 class="title has-text-centered">자율학습 출석</h1>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="notification is-warning">
+              {% for message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        {% if current_session %}
+            <div class="box">
+                <p class="subtitle has-text-centered">
+                    현재 출석 가능 세션: <strong>{{ current_session }}</strong>
+                </p>
+                <form method="POST">
+                    <input type="hidden" name="fingerprint" id="fingerprint" />
+
+                    <div class="field">
+                        <label class="label">이름</label>
+                        <div class="control">
+                            <input class="input" type="text" name="name" required>
+                        </div>
+                    </div>
+
+                    <div class="field">
+                        <label class="label">학번</label>
+                        <div class="control">
+                            <input class="input" type="text" name="student_id" pattern="\d{5}" required>
+                        </div>
+                    </div>
+
+                    <div class="field is-grouped is-justify-content-center">
+                        <div class="control">
+                            <button class="button is-primary" type="submit">출석하기</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        {% else %}
+            <div class="notification is-light has-text-centered">
+                현재는 출석 가능한 시간이 아닙니다.
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<script>
+    // FingerprintJS 로드 및 식별자 수집
+    FingerprintJS.load().then(fp => {
+        fp.get().then(result => {
+            document.getElementById("fingerprint").value = result.visitorId;
+        });
+    });
+</script>
+</body>
+</html>

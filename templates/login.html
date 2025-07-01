@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>로그인</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@fingerprintjs/fingerprintjs@3/dist/fp.min.js"></script>
+</head>
+<body>
+<section class="section">
+    <div class="container" style="max-width: 400px;">
+        <h1 class="title has-text-centered">로그인</h1>
+
+        {% with messages = get_flashed_messages() %}
+          {% if messages %}
+            <div class="notification is-danger">
+              {% for message in messages %}
+                <p>{{ message }}</p>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form method="POST" id="loginForm">
+            <input type="hidden" name="fingerprint" id="fingerprint">
+
+            <div class="field">
+                <label class="label">학교 이메일</label>
+                <div class="control">
+                    <input class="input" type="email" name="email" required>
+                </div>
+            </div>
+
+            <div class="field">
+                <label class="label">비밀번호</label>
+                <div class="control">
+                    <input class="input" type="password" name="password" required>
+                </div>
+            </div>
+
+            <div class="field is-grouped is-justify-content-center">
+                <div class="control">
+                    <button class="button is-primary" type="submit" id="submitBtn" disabled>로그인</button>
+                </div>
+                <div class="control">
+                    <a href="{{ url_for('auth.register') }}" class="button is-light">회원가입</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+
+<script>
+    (async () => {
+        const fp = await FingerprintJS.load();
+        const result = await fp.get();
+        document.getElementById("fingerprint").value = result.visitorId;
+        document.getElementById("submitBtn").disabled = false;
+    })();
+</script>
+</body>
+</html>

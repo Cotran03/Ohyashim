@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>관리자 대시보드</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css" />
+</head>
+<body>
+<section class="section">
+  <div class="container">
+    <h1 class="title">관리자 대시보드</h1>
+
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+        <div class="notification is-info">
+          {% for message in messages %}
+            <p>{{ message }}</p>
+          {% endfor %}
+        </div>
+      {% endif %}
+    {% endwith %}
+
+    <form method="POST">
+      <div class="field">
+        <label class="label">초기화할 사용자 이메일</label>
+        <div class="control">
+          <input class="input" type="email" name="target_email" placeholder="user@example.com" required>
+        </div>
+      </div>
+      <button type="submit" class="button is-danger">사용자 fingerprint 초기화</button>
+    </form>
+  </div>
+</section>
+</body>
+</html>
